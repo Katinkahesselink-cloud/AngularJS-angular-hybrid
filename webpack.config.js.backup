@@ -1,0 +1,69 @@
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: path.resolve(__dirname, 'src/main.ts'),
+  output: {
+    filename: 'bundle.[contenthash].js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+    publicPath: '/',
+  },
+    optimization: {
+        minimize: false
+    },
+  resolve: {
+    // Include .mjs to support Angular ESM packages
+    extensions: ['.ts', '.mjs', '.js'],
+    alias: {
+      // '@angular/upgrade/static': path.resolve(__dirname, 'node_modules/@angular/upgrade/fesm2022/static.mjs')
+    }
+  },
+  module: {
+    rules: [
+      // Run the Angular Linker on partial-Ivy code shipped in node_modules
+      {
+        test: /\.m?js$/,
+        include: [
+          /node_modules\/@angular/,
+          /node_modules\/rxjs/
+        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            presets: [
+              [require.resolve('@babel/preset-env'), { targets: { esmodules: true } }]
+            ],
+            plugins: [
+              [require.resolve('@angular/compiler-cli/linker/babel'), { linkPartialInput: true }]
+            ]
+          }
+        }
+      },
+      {
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: { transpileOnly: true }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src/index.html'),
+    })
+  ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    historyApiFallback: true,
+    port: 4200,
+    open: true,
+  }
+};

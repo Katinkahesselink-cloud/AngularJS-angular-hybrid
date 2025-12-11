@@ -1,0 +1,40 @@
+{
+  "name": "js-router-to-17",
+  "version": "1.0.0",
+  "description": "An example setup for hybrid AngularJS + Angular 17 routing",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --open --history-api-fallback"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/compiler-cli": "^17.0.0",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@types/angular": "^1.8.9",
+    "@types/angular-route": "^1.7.6",
+    "babel-loader": "^9.2.1",
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@angular/common": "^17.0.0",
+    "@angular/compiler": "^17.0.2",
+    "@angular/core": "^17.0.0",
+    "@angular/platform-browser-dynamic": "^17.0.0",
+    "@angular/router": "^17.0.0",
+    "@angular/upgrade": "^17.0.0",
+    "angular": "^1.8.3",
+    "angular-route": "^1.8.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zone.js": "^0.14.2"
+  }
+}
