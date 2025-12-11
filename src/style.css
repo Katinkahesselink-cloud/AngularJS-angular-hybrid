@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9fafb;
+}
+
+.app-dashboard {
+  padding: 16px;
+}
+
+header, footer {
+  background-color: #ffffff;
+}

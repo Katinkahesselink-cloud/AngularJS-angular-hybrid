@@ -8,13 +8,13 @@ import {EmptyComponent, RouteComponent} from "./route.component";
     imports: [
         BrowserModule,
         RouterModule.forRoot([
-            {path: '', redirectTo: '/route1', pathMatch: 'full'},
-            {path: 'route1', component: RouteComponent, },
-            {path: 'route2', component: RouteComponent, },
-            {path: 'route3', component: RouteComponent, },
-            {path: 'route4', component: EmptyComponent, },
+            {path: '', component: EmptyComponent, pathMatch: 'full'},
+            {path: 'route1', component: RouteComponent},
+            {path: 'route2', component: RouteComponent},
+            {path: 'route3', component: RouteComponent},
+            {path: 'route4', component: EmptyComponent},
         ], {
-            useHash: true,
+            useHash: false,
             enableTracing: false
 
         }),
@@ -30,7 +30,7 @@ export class AppModule implements DoBootstrap {
 
     ngDoBootstrap(appRef: ApplicationRef) {
         appRef.bootstrap(AppComponent);
-        this.upgrade.bootstrap(document.body, ['legacyApp'], { strictDi: true });
+        this.upgrade.bootstrap(document.body, ['UsersApp']);
         console.log("AngularJS bootstrapped!")
     }
 }
