@@ -4,6 +4,8 @@ import {UpgradeModule} from '@angular/upgrade/static';
 import {RouterModule} from "@angular/router";
 import {AppComponent} from './app.component';
 import {EmptyComponent, RouteComponent} from "./route.component";
+import { ModernAddUserComponent } from './angularJS/modules/user/add-user/add-user.component';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -19,6 +21,7 @@ import {EmptyComponent, RouteComponent} from "./route.component";
 
         }),
         UpgradeModule,
+        ModernAddUserComponent
     ],
     declarations: [],
     exports: [RouterModule],

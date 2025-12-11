@@ -20,6 +20,16 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.m?js$/,
+        include: /node_modules[\\/]@angular[\\/]/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: ['@angular/compiler-cli/linker/babel']
+          }
+        }
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
