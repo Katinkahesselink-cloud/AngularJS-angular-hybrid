@@ -1,5 +1,6 @@
 import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {UpgradeModule} from '@angular/upgrade/static';
 import {RouterModule} from "@angular/router";
 import {AppComponent} from './app.component';
@@ -9,6 +10,7 @@ import { ModernAddUserComponent } from './angularJS/modules/user/add-user/add-us
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         RouterModule.forRoot([
             {path: '', component: EmptyComponent, pathMatch: 'full'},
             {path: 'route1', component: RouteComponent},

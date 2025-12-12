@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import 'zone.js';
 import './angularJS/app';
 import './angularJS/modules/app.module';
+import '@angular/platform-browser/animations';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app.module';
 
