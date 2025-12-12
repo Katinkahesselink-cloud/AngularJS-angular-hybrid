@@ -11,3 +11,7 @@ body {
 header, footer {
   background-color: #ffffff;
 }
+
+.usr-add-user-modal mat-icon {
+  margin-right: 10px;
+}

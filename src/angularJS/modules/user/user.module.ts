@@ -3,7 +3,7 @@ import "./users.data";
 import { Config } from "./user.config";
 import { usersDirective } from "./users/users";
 import { userRowDirective } from "./users/user-row/user-row";
-import { userDetailsDirective } from "./users-detials/users-detials";
+import { userDetailsDirective } from "./users-details/users-details";
 import { userShowDirective } from "./users/user-show/user-show";
 
 declare const angular: ng.IAngularStatic;

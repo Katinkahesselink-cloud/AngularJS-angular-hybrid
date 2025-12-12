@@ -9,7 +9,7 @@ import {
   signal
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatButton } from '@angular/material/button';
 import {
   MatDialog,
   MatDialogActions,
@@ -19,7 +19,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import { MatDivider, MatDividerModule } from '@angular/material/divider';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { take } from 'rxjs';
@@ -36,17 +36,18 @@ interface AddUserForm {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDialogModule,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatButton,
     MatIconModule,
     MatDividerModule,
     MatFormField,
     MatLabel,
+    MatError,
     MatIcon,
     MatDivider,
     MatInput
@@ -55,7 +56,7 @@ interface AddUserForm {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddUserDialogComponent {
-  public readonly dialogTitle = signal('Add User');
+  public readonly dialogTitle = 'Add User';
   public readonly isSubmitting = signal(false);
 
   public readonly addUserForm = new FormGroup<AddUserForm>({
@@ -71,11 +72,13 @@ export class AddUserDialogComponent {
       nonNullable: true,
       validators: [Validators.required, Validators.email]
     })
+    // add country
   });
 
   constructor(private readonly dialogRef: MatDialogRef<AddUserDialogComponent>) {}
 
   public submit(event?: Event): void {
+    // on submit: add data to global data, see edit-user.component.ts for reference
     event?.preventDefault();
 
     if (this.addUserForm.invalid) {
