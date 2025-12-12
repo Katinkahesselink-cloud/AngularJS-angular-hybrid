@@ -1,6 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const materialThemePath = path.resolve(
+  __dirname,
+  'node_modules/@angular/material/prebuilt-themes/indigo-pink.css'
+);
 
 module.exports = {
   entry: './src/main.ts',
@@ -48,6 +52,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/style.css', to: 'style.css' },
+        { from: materialThemePath, to: 'material-theme.css' },
         {
           from: 'src/angularJS/assets',
           to: 'assets',
