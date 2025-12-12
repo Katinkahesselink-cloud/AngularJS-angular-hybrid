@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   OnDestroy,
   Output,
   signal
@@ -23,12 +24,19 @@ import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/m
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { take } from 'rxjs';
+import { UserRecord, UsersDataService } from '../user.types';
 
 interface AddUserForm {
   firstName: FormControl<string>;
   lastName: FormControl<string>;
   email: FormControl<string>;
 }
+
+type AddUserFormValue = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 @Component({
   selector: 'usr-add-user-dialog',
@@ -58,6 +66,7 @@ interface AddUserForm {
 export class AddUserDialogComponent {
   public readonly dialogTitle = 'Add User';
   public readonly isSubmitting = signal(false);
+  private readonly usersData: UsersDataService | null;
 
   public readonly addUserForm = new FormGroup<AddUserForm>({
     firstName: new FormControl('', {
@@ -75,10 +84,16 @@ export class AddUserDialogComponent {
     // add country
   });
 
-  constructor(private readonly dialogRef: MatDialogRef<AddUserDialogComponent>) {}
+  constructor(
+    private readonly dialogRef: MatDialogRef<AddUserDialogComponent>,
+    @Inject('$injector') angularInjector: ng.auto.IInjectorService
+  ) {
+    this.usersData = angularInjector.has('UsersData')
+      ? angularInjector.get<UsersDataService>('UsersData')
+      : null;
+  }
 
   public submit(event?: Event): void {
-    // on submit: add data to global data, see edit-user.component.ts for reference
     event?.preventDefault();
 
     if (this.addUserForm.invalid) {
@@ -87,11 +102,21 @@ export class AddUserDialogComponent {
     }
 
     this.isSubmitting.set(true);
-    const payload = this.addUserForm.getRawValue();
-    console.log('Add user payload', payload);
-    this.dialogRef.close(payload);
-    this.resetForm();
-    this.isSubmitting.set(false);
+
+    try {
+      if (!this.usersData) {
+        console.error('UsersData service is unavailable; cannot add user.');
+        return;
+      }
+
+      const payload = this.addUserForm.getRawValue();
+      const newUser = this.createUserRecord(payload);
+      this.insertUser(newUser);
+      this.dialogRef.close(newUser);
+      this.resetForm();
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
 
   public cancel(): void {
@@ -121,6 +146,43 @@ export class AddUserDialogComponent {
 
   public get email(): FormControl<string> {
     return this.addUserForm.controls.email;
+  }
+
+  private createUserRecord(payload: AddUserFormValue): UserRecord {
+    const sanitized = this.sanitizePayload(payload);
+    return {
+      id: this.getNextUserId(),
+      firstName: sanitized.firstName,
+      lastName: sanitized.lastName,
+      email: sanitized.email,
+      country: 'Unknown',
+      dateOfBirth: new Date().toISOString(),
+      selected: false
+    };
+  }
+
+  private insertUser(user: UserRecord): void {
+    if (!this.usersData) {
+      return;
+    }
+
+    this.usersData.users = [...this.usersData.users, user];
+  }
+
+  private getNextUserId(): number {
+    if (!this.usersData || !this.usersData.users.length) {
+      return 1;
+    }
+
+    return this.usersData.users.reduce((maxId, record) => Math.max(maxId, record.id), 0) + 1;
+  }
+
+  private sanitizePayload(payload: AddUserFormValue): AddUserFormValue {
+    return {
+      firstName: payload.firstName.trim(),
+      lastName: payload.lastName.trim(),
+      email: payload.email.trim()
+    };
   }
 }
 
